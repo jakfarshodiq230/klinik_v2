@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="utf8mb4" collation="utf8mb4_general_ci">db_klinik_jerni</database>
+</source>
+<canvas zoom="85">
+<tables>
+<table name="dokter" view="colnames">
+<left>35</left>
+<top>16</top>
+<width>108</width>
+<height>196</height>
+<sql_create_table>CREATE TABLE `dokter` (
+  `kd_dokter` int(11) NOT NULL AUTO_INCREMENT,
+  `kd_poli` int(11) NOT NULL,
+  `tgl_kunjungan` int(12) NOT NULL,
+  `kd_user` int(11) NOT NULL,
+  `nm_dokter` varchar(300) NOT NULL,
+  `sip` enum('pagi','siang','malam','') NOT NULL,
+  `tmpat_lhr` varchar(300) NOT NULL,
+  `no_tlp` varchar(14) NOT NULL,
+  `alamat` varchar(300) NOT NULL,
+  PRIMARY KEY (`kd_dokter`),
+  KEY `kd_poli` (`kd_poli`),
+  KEY `kd_user` (`kd_user`),
+  CONSTRAINT `dokter_ibfk_1` FOREIGN KEY (`kd_poli`) REFERENCES `poliklinik` (`kd_poli`),
+  CONSTRAINT `dokter_ibfk_2` FOREIGN KEY (`kd_user`) REFERENCES `login` (`kd_user`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="kunjungan" view="colnames">
+<left>371</left>
+<top>25</top>
+<width>115</width>
+<height>139</height>
+<sql_create_table>CREATE TABLE `kunjungan` (
+  `tgl_kunjungan` date NOT NULL,
+  `no_pasien` int(11) NOT NULL,
+  `kd_poli` int(11) NOT NULL,
+  `jam_kunjungan` time NOT NULL,
+  `kd_kunjungan` int(12) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`kd_kunjungan`),
+  KEY `kd_poli` (`kd_poli`),
+  CONSTRAINT `kunjungan_ibfk_1` FOREIGN KEY (`kd_poli`) REFERENCES `poliklinik` (`kd_poli`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="laboratorium" view="colnames">
+<left>40</left>
+<top>271</top>
+<width>82</width>
+<height>124</height>
+<sql_create_table>CREATE TABLE `laboratorium` (
+  `kd_lab` int(11) NOT NULL AUTO_INCREMENT,
+  `no_rm` int(11) NOT NULL,
+  `hasil_lab` varchar(300) NOT NULL,
+  `ket` text NOT NULL,
+  PRIMARY KEY (`kd_lab`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="login" view="colnames">
+<left>169</left>
+<top>169</top>
+<width>88</width>
+<height>139</height>
+<sql_create_table>CREATE TABLE `login` (
+  `kd_user` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(300) NOT NULL,
+  `password` varchar(300) NOT NULL,
+  `nama` varchar(20) NOT NULL,
+  `alamat` text NOT NULL,
+  PRIMARY KEY (`kd_user`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="obat" view="colnames">
+<left>660</left>
+<top>99</top>
+<width>82</width>
+<height>139</height>
+<sql_create_table>CREATE TABLE `obat` (
+  `kd_obat` int(11) NOT NULL AUTO_INCREMENT,
+  `nm_obat` varchar(300) NOT NULL,
+  `jml_obat` int(11) NOT NULL,
+  `ukuran` int(11) NOT NULL,
+  `harga` int(25) NOT NULL,
+  PRIMARY KEY (`kd_obat`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="pasien" view="colnames">
+<left>567</left>
+<top>241</top>
+<width>92</width>
+<height>211</height>
+<sql_create_table>CREATE TABLE `pasien` (
+  `no_pasien` int(11) NOT NULL AUTO_INCREMENT,
+  `nm_pasien` varchar(300) NOT NULL,
+  `j_kel` varchar(100) NOT NULL,
+  `agama` varchar(100) NOT NULL,
+  `alamat` varchar(300) NOT NULL,
+  `tgl_lhr` date NOT NULL,
+  `usia` int(3) NOT NULL,
+  `no_tlp` int(14) NOT NULL,
+  `nm_kk` varchar(300) NOT NULL,
+  `hub_kel` varchar(100) NOT NULL,
+  PRIMARY KEY (`no_pasien`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="poliklinik" view="colnames">
+<left>227</left>
+<top>25</top>
+<width>77</width>
+<height>110</height>
+<sql_create_table>CREATE TABLE `poliklinik` (
+  `kd_poli` int(11) NOT NULL AUTO_INCREMENT,
+  `nm_poli` varchar(300) NOT NULL,
+  `lantai` int(11) NOT NULL,
+  PRIMARY KEY (`kd_poli`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="rekam_medis" view="colnames">
+<left>346</left>
+<top>249</top>
+<width>120</width>
+<height>211</height>
+<sql_create_table>CREATE TABLE `rekam_medis` (
+  `no_rm` int(11) NOT NULL AUTO_INCREMENT,
+  `kd_tindakan` int(11) NOT NULL,
+  `kd_obat` int(11) NOT NULL,
+  `kd_user` int(11) NOT NULL,
+  `no_pasien` int(11) NOT NULL,
+  `diagnosa` varchar(300) NOT NULL,
+  `resep` varchar(300) NOT NULL,
+  `keluhan` varchar(300) NOT NULL,
+  `tgl_pemeriksaan` int(12) NOT NULL,
+  `ket` text NOT NULL,
+  PRIMARY KEY (`no_rm`),
+  KEY `kd_tindakan` (`kd_tindakan`),
+  KEY `kd_obat` (`kd_obat`),
+  KEY `kd_user` (`kd_user`),
+  KEY `no_pasien` (`no_pasien`),
+  CONSTRAINT `rekam_medis_ibfk_1` FOREIGN KEY (`kd_tindakan`) REFERENCES `tindakan` (`kd_tindakan`),
+  CONSTRAINT `rekam_medis_ibfk_2` FOREIGN KEY (`kd_obat`) REFERENCES `obat` (`kd_obat`),
+  CONSTRAINT `rekam_medis_ibfk_3` FOREIGN KEY (`kd_user`) REFERENCES `login` (`kd_user`),
+  CONSTRAINT `rekam_medis_ibfk_4` FOREIGN KEY (`no_pasien`) REFERENCES `pasien` (`no_pasien`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="tindakan" view="colnames">
+<left>511</left>
+<top>17</top>
+<width>102</width>
+<height>110</height>
+<sql_create_table>CREATE TABLE `tindakan` (
+  `kd_tindakan` int(11) NOT NULL AUTO_INCREMENT,
+  `nm_tindakan` varchar(300) NOT NULL,
+  `ket` text NOT NULL,
+  PRIMARY KEY (`kd_tindakan`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="profil" view="colnames">
+<left>159</left>
+<top>331</top>
+<width>76</width>
+<height>124</height>
+<sql_create_table>CREATE TABLE `profil` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `sejarah` varchar(255) NOT NULL,
+  `visi` varchar(255) NOT NULL,
+  `misi` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>
